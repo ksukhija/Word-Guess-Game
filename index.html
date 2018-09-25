@@ -13,19 +13,28 @@
 </head>
 
 <body>
-    <!-- We create a jumbotron div. Everything placed in here gets styled by the CSS rules of the element's class. -->
+    <!-- Create a jumbotron  -->
     <div class="jumbotron">
         <h1 class="display-5 text-center text-primary">Word Guess Game</h1>
     </div>
 
 
-
+    <!--
+        Container to hold 3 rows of Cards:
+          - 1st Row (Card-Deck) has three cards [Current Game Stats, Main Game Arae, Letter Pressed]
+          - 2nd Row is just one card [ Overall Game Stats Heading]
+          - 3rd Row (Card-Deck) has two card [for game results]
+    -->
     <div class="container">
 
         <!-- FIRST CARD ROW: THREE CARDS -->
         <div class="card-deck ">
 
-            <!-- CARD 1-->
+            <!-- CARD 1: CURRENT GAME STATS 
+                 JS uses the following Id's to update the content:
+                    #num-of-attemps-made
+                    #num-of-attemps-remaining
+            -->
             <div class="card border-primary">
                 <div class="card-header text-center">
                     <div class="card-title">
@@ -33,57 +42,54 @@
                     </div>
                 </div>
                 <div class="card-body text-center">
-
-
                     <p><strong>NUMBER OF ATTEMPTS MADE</strong> </p>
                     <button type="button" class="btn btn-outline-primary"">
-                        <h2 id="num-of-attemps-made"></h2>
+                        <h2 id="num-of-attemps-made"></h2> <!--Updated by JS-->
                     </button>
 
+                    <!--TODO: Is the br's ok to use? Or is there a better way  -->
                     <br> <br>
+
                     <p><strong> NUMBER OF ATTEMPTS REMAINING</strong> </p>
                     <button type="button" class="btn btn-outline-primary"">
-                        <h2 id="num-of-attemps-remaining"></h2>
+                        <h2 id="num-of-attemps-remaining"></h2> <!--Updated by JS-->
                     </button>
 
                 </div>
             </div>
 
-            <!-- CARD 2-->
+            <!-- CARD 2: MAIN GAME AREA
+                 JS uses the following Id's to update the content:
+                    #game-status-id
+                    #game-session-id
+                    #current-Word-display
+                    #game-session-msg
+            -->
             <div class="card  border-primary text-white bg-primary">
-
                 <div class="card-header text-center">
                     <div class="card-title">
-                        <h3 id="game-status-id"> </h3>
-                        <div id="game-session-id" class="text-warning" style="font-size: 2em"> </div>
+                        <h3 id="game-status-id"> </h3> <!--Updated by JS-->
+                        <div id="game-session-id" class="text-warning" style="font-size: 2em"> </div> <!-- updated by JS -->
                     </div>
                 </div>
-
                 <div class="card-body text-center">
                     <br><br><br>
-                    <h4 id="current-Word-display" class="text-warning"> <strong></strong></h4>
+                    <h4 id="current-Word-display" class="text-warning"> <strong></strong></h4> <!--Updated by JS-->
                     <br><br>
-
-                    <!-- <p id="game-session-msg" class="text-warning"> <strong>PRESS ANY KEY TO GET STARTED...</strong></p> -->
-                    <!-- <p id="game-session-msg" class="text-warning"> <strong></strong></p> -->
-                    <h6 id="game-session-msg" class="text-warning"> </h6>
+                    <h6 id="game-session-msg" class="text-warning"> </h6><!--Updated by JS-->
                     <br>
                 </div>
-
-
-
             </div>
 
-            <!-- CARD 3-->
+            <!-- CARD 3: SHOWS Letters Already Pressed -->
             <div class="card border-primary">
                 <div class="card-header text-center">
                     <div class="card-title">
                         <h3 class="text-primary"> Letters Already Pressed <br>
                     </div>
-
                 </div>
                 <div class="card-body">
-                    <h5 id="letters-already-pressed"></h5>
+                    <h5 id="letters-already-pressed"></h5> <!--Updated by JS-->
                 </div>
             </div>
         </div>
@@ -91,7 +97,7 @@
 
         <br> <br>
 
-        <!-- SECOND CARD ROW: ONE CARD -->
+        <!-- SECOND CARD ROW: ONE CARD - JUST THE HEADING - NO UPDATES BY JS -->
         <div class="card border-info text-white bg-info">
             <div class="card-header text-center">
                 <div class="card-title">
@@ -105,31 +111,40 @@
 
         <div class="card-deck ">
 
-            <!-- CARD 1-->
+            <!-- CARD 1: WON COUNT
+               
+                 JS uses the following ID to update the Win Count
+                   #overall-wins-count
+            -->
             <div class="card border-info text-white bg-info ">
                 <div class="card-header text-center">
                     <div class="card-title">
-                        <h3> Wins <br>
+                        <h3> Won <br>
                     </div>
                 </div>
                 <div class="card-body text-center">
                     <button type="button" class="btn btn-warning">
-                        <h2 id="overall-wins-count">0</h2>
+                        <h2 id="overall-wins-count">0</h2> <!--Updated by JS-->
                     </button>
 
                 </div>
             </div>
 
-            <!-- CARD 2-->
+            <!-- CARD 2: LOSS COUNT
+
+             JS uses the following ID to update the LOSS Count
+                   #overall-loses-count
+            
+            -->
             <div class="card border-info text-white bg-info">
                 <div class="card-header text-center">
                     <div class="card-title">
-                        <h3> Loses <br>
+                        <h3> Lost <br>
                     </div>
                 </div>
                 <div class="card-body text-center">
                     <button type="button" class="btn btn-warning">
-                        <h2 id="overall-loses-count">0</h2>
+                        <h2 id="overall-loses-count">0</h2> <!--Updated by JS-->
                     </button>
 
                 </div>
@@ -139,7 +154,8 @@
         </div>
 
     </div>
-
+    
+    <!-- Loading the Javasript after all the HTML code -->
     <script src="./assets/javascript/game.js"></script>
 </body>
 

@@ -1,49 +1,168 @@
 
 
-/* Declare and Initialze Global Variable */
+/**
+ *  G L O B A L  V A R I B L E S
+ */
 
-var g_gameStarted = false;
+ // indiacates if game is Active
+var g_gameInProgress = false;
+
+// Games Played Count
 var g_totalGameSessions = 0;
-var g_winCount = 0;
-var g_lostCount = 0;
-var g_numOfAttempsMade = 0;
-var g_chosenWord = "";
-var g_currentGuessedWord = [];
-var g_charsLeft2BeGuessed;
-var g_LettersAlreadyPressed = [];
-var g_user_won = false;
-var g_word_list = ["soar",       "sweet",  "jealous", "swing",     "imbibe",
-                   "understood", "home",   "pollute", "petite",    "airport",
-                   "sordid",     "shave",  "stitch",   "toothpaste", "suffer",
-                   "giraffe",    "top",    "meeting",  "abandon",   "punish",
-                   "ratty",      "nebulous", "drag",    "banana",   "suck"];
 
+// number of games won count
+var g_winCount = 0;
+
+// number of games lost count
+var g_lostCount = 0;
+
+// running count of the guess made by the user in an Active game session
+var g_numOfAttempsMade = 0;
+
+// hold the word selected by the Computer for user to guess. The word is stored in UPPER CASE
+var g_chosenWord = "";
+
+//holds the current state of the user guess during a Active game session
+var g_currentGuessedWord = [];
+
+// holds the chars which are still to be guessed by the user
+var g_charsLeft2BeGuessed;
+
+// holds the list of letters already pressed by the user
+var g_LettersAlreadyPressed = [];
+
+// flag to indicate if user guessed the word correctly
+var g_user_won = false;
+
+/**
+ *  This is the word list that the program picks randomly from. Program 
+ *  converts the selected word to Uppercase and the uppercase version is
+ *  used. The chars entered by the user are also converted to uppercase.
+ *  So, the program is working on the uppercase chars and words
+ */
+var g_word_list = ["soar", "sweet", "jealous", "swing", "imbibe",
+    "understood", "home", "pollute", "petite", "airport",
+    "sordid", "shave", "stitch", "toothpaste", "suffer",
+    "giraffe", "top", "meeting", "abandon", "punish",
+    "ratty", "nebulous", "drag", "banana", "suck"];
+
+
+
+/**
+ *  C O N S T A N T S
+ */
+
+ // game ends after these many unsuccessfull attempts 
 const MAX_ATTEMPTS_ALLOWED = 10;
+
+// used to display the length of the computer selected word to the user
 const CHAR_DISPLAY_SYMBOL = '_';
+
+// Strings used in the program
 const GAME_IN_PROGRESS_STRING = "Game In Progress";
 const GAMES_PLAYED_STRING = "Games Played ";
 const GAME_NOT_IN_PROGRESS_MSG_STRING = "PRESS ANY KEY TO GET STARTED...";
-const GAME_IN_PROGRESS_MSG_STRING = "";
-const ALPHABET_A_CODE = 65;
-const ALPHABET_Z_CODE = 90;
-const ALPHABET_a_CODE = 97;
-const ALPHABET_z_CODE = 122;
+const BLANK_STRING = "";
+const GAME_CONTINUE_PLAYING_STRING = "PRESS ANY KEY TO CONTINUE PLAYING...";
 const USER_WON_STRING = "YOU WON!"
 const USER_LOST_STRING = "YOU  LOST!"
 
+// ASCII codes for letter A and Z (uppercase)
+const ALPHABET_A_CODE = 65;
+const ALPHABET_Z_CODE = 90;
 
 
-function module_init() {
-    g_numOfAttempsMade = 0;
-    g_currentGuessedWord = [];
+/**
+ *   F U N C T I O N S
+ */
+
+
+/**
+ *  This function updates the letters already pressed field
+ *  on the HTML page.
+ * 
+ *  Array g_LettersAlreadyPressed contains the letters entered
+ *  by the user, so far. 
+ */
+function updateLettesAlreadyPressedField() {
+
+    var lettersAlreadyPressedId = document.getElementById('letters-already-pressed');
+    var word2Display = "";
+
+    // building a string, so as to have a space between the guessed characters
+    for (var i = 0; i < g_LettersAlreadyPressed.length; i++) {
+        word2Display += (g_LettersAlreadyPressed[i] + ' ');
+    }
+
+    lettersAlreadyPressedId.textContent = word2Display;
+}
+
+/**
+ *  This function updates attempts made and attempts remaining fields
+ *  on the HTML page.
+ */
+function updateCurrentGameStatsCard() {
+
+    var numOfAttemptsMadeDiv = document.getElementById('num-of-attemps-made');
+    numOfAttemptsMadeDiv.textContent = g_numOfAttempsMade;
+
+    var numOfAttemptsRemainingDiv = document.getElementById('num-of-attemps-remaining');
+    numOfAttemptsRemainingDiv.textContent = MAX_ATTEMPTS_ALLOWED - g_numOfAttempsMade;
+
+}
+
+/**
+ *  This function clears the LetterAlreadyPressed Field and 
+ *  updates the area on the HTML page
+ */
+function clearLettersAlreadyPressedField() {
+
+    // First Clear the array holding the letters already pressed 
     g_LettersAlreadyPressed = [];
-    g_gameStarted = false;
-    g_user_won = false;
 
+    // update the Card Area on the HTML page where these letters are displayed
     updateLettesAlreadyPressedField();
 
+}
+
+/**
+ *  This function clears the game attepsts field and 
+ *  updates the area on the HTML page
+ */
+
+function clearGameStatsCard() {
+
+    // clear the number of attempts made 
+    g_numOfAttempsMade = 0;
+
+    // update the game stats (cleared)
+    updateCurrentGameStatsCard();
+}
+
+/**
+ *  This is the game module init function. It initializes the variables and
+ *  update the HTML page with initial settings/messages before the start of 
+ *  the game.
+ * 
+ *  This function is called after the page is loaded and evertime a new game 
+ *  is started.
+ */
+function module_init() {
+
+
+    g_currentGuessedWord = [];
+
+    g_gameInProgress = false;
+    g_user_won = false;
+
     /**
-     * Update the Game In Progress Message
+     * Clear the Letter Already Pressed field 
+     */
+    clearLettersAlreadyPressedField();
+
+
+    /**
+     * Update the Games Played String
      */
     var gameStatusId = document.getElementById("game-status-id");
     gameStatusId.textContent = GAMES_PLAYED_STRING;
@@ -55,37 +174,29 @@ function module_init() {
     gameSessionId.textContent = g_totalGameSessions;
 
     /**
-    * Update the Game Started Msg String
+    * Update the Game Msg String
     */
     var gameSessionMsgId = document.getElementById('game-session-msg');
-    gameSessionMsgId.textContent = GAME_NOT_IN_PROGRESS_MSG_STRING;
+    if (g_totalGameSessions === 0) {
+        gameSessionMsgId.textContent = GAME_NOT_IN_PROGRESS_MSG_STRING;
+    } else {
+        gameSessionMsgId.textContent = GAME_CONTINUE_PLAYING_STRING;
+    }
 
-
-    updateCurrentGameStatsCard();
+    clearGameStatsCard();
 
 }
 
+/**
+ *  This function displays the current state of the word guessed on the Main card
+ */
 
-function updateGameSessionCard() {
+function updateGuessedWord() {
 
-    /**
-     * Update the Game In Progress Message
-     */
-    var gameStatusId = document.getElementById("game-status-id");
-    gameStatusId.textContent = GAME_IN_PROGRESS_STRING;
-
-    /**
-     * Update the Game Sesssion Number
-     */
-    var gameSessionId = document.getElementById('game-session-id');
-    gameSessionId.textContent = g_totalGameSessions;
-
-    /**
-     *  Update the Chosen word field
-     */
     var wordDisplayId = document.getElementById('current-Word-display');
     var word2display = "";
 
+    // add a space between the word chars for better readability
     for (var i = 0; i < g_currentGuessedWord.length; i++) {
         word2display += (g_currentGuessedWord[i] + ' ');
     }
@@ -94,54 +205,40 @@ function updateGameSessionCard() {
 
 }
 
-function updateCurrentGameStatsCard() {
-
-    /**
-     *  Update attempts made and attemps remaining fields
-     */
-    var numOfAttemptsMadeDiv = document.getElementById('num-of-attemps-made');
-    numOfAttemptsMadeDiv.textContent = g_numOfAttempsMade;
-
-    var numOfAttemptsRemainingDiv = document.getElementById('num-of-attemps-remaining');
-    numOfAttemptsRemainingDiv.textContent = MAX_ATTEMPTS_ALLOWED - g_numOfAttempsMade;
-
-}
-
-function updateLettesAlreadyPressedField() {
 
 
-    /**
-     *  Update attempts made and attemps remaining fields
-     */
-    var lettersAlreadyPressedId = document.getElementById('letters-already-pressed');
-    var word2Display = "";
 
-    for (var i = 0; i < g_LettersAlreadyPressed.length; i++) {
-        word2Display += (g_LettersAlreadyPressed[i] + ' ');
-    }
-
-    lettersAlreadyPressedId.textContent = word2Display;
-
-
-}
-
+/**
+ * This funtion checks if the user guessed the word. 
+ * 
+ * @param {string} keyPressed - alphabetic key pressed by the User (converted to Uppercase)
+ *     
+ */
 function isWordGuessComplete(keyPressed) {
+
     var return_val = false;
-    var newCharsLeft2BeGuessed="";
+    var newCharsLeft2BeGuessed = "";
     var myChar;
-    
 
-    keyPressed = keyPressed.toUpperCase();
 
-    for (var i=0; i<g_charsLeft2BeGuessed.length; i++) {
+    /**
+     *  If the char key pressed by user is in the g_charsLeft2BeGuessed, it 
+     *  is removed. At the end of this function g_charsLeft2BeGuessed will have 
+     *  only the chars which user still need to guess.
+     */
+    for (var i = 0; i < g_charsLeft2BeGuessed.length; i++) {
         myChar = g_charsLeft2BeGuessed.charAt(i);
-        if( myChar != keyPressed) {
-            newCharsLeft2BeGuessed= newCharsLeft2BeGuessed.concat(myChar);
-            
+        if (myChar != keyPressed) {
+            newCharsLeft2BeGuessed = newCharsLeft2BeGuessed.concat(myChar);
         }
     }
+
     g_charsLeft2BeGuessed = newCharsLeft2BeGuessed;
 
+    /**
+     * Check if there are no more chars left to be guessed, ie user
+     * has correctly guessed the word
+     */
     if (g_charsLeft2BeGuessed.length == 0) {
         return_val = true;
         g_user_won = true;
@@ -152,18 +249,28 @@ function isWordGuessComplete(keyPressed) {
 }
 
 
+
+/**
+ * This function is called when the HTML page is loaded. This gives us the opportunity
+ * to initialize the screen at set up the things, before any user interaction.
+ */
 window.onload = function () {
 
+    // initialize variables and set up the page with initial default messages
     module_init();
 
 };
 
-
+/**
+ * This function validates if the key pressed by the user is a valid key
+ * @param {String} keyPressed  -  key pressed by the user(converted to upper case)
+ */
 function isAlphabet(keyPressed) {
 
     var code = keyPressed.charCodeAt(0);
-    if ((code >= ALPHABET_A_CODE && code <= ALPHABET_Z_CODE) || // upper alpha (A-Z)
-        (code >= ALPHABET_a_CODE && code <= ALPHABET_z_CODE)) { // lower alpha (a-z)
+
+   // upper alpha (A-Z)
+    if (code >= ALPHABET_A_CODE && code <= ALPHABET_Z_CODE) {
         return true;
     } else {
         return false;
@@ -172,22 +279,21 @@ function isAlphabet(keyPressed) {
 
 
 /**
-** When  user presses a key we start the Word Guess Game
+** When user presses a key we start the Word Guess Game
 */
 document.onkeyup = function (event) {
 
     var m_game_over = false;
-    var key_pressed = event.key.toUpperCase();
+    
 
     /* 
     ** Check if game is to be re-started
     */
-    if (g_gameStarted === false) {
+    if (g_gameInProgress === false) {
 
-        g_gameStarted = true;
+        g_gameInProgress = true;
 
-          // module_init();
-
+        
         /**
          * Initialize new game session variables
          */
@@ -197,17 +303,16 @@ document.onkeyup = function (event) {
         /**
          *  Let Computer select the word to guess
          */
-        var rand1to25 = Math.floor((Math.random() * 25) + 1);
-
-        g_chosenWord = g_word_list[rand1to25].toUpperCase();
-       // g_chosenWord = "TEST"
+        var rand1to25         = Math.floor((Math.random() * 25) + 1);
+        g_chosenWord          = g_word_list[rand1to25].toUpperCase();
+        
         g_charsLeft2BeGuessed = g_chosenWord;
 
 
         /**
          * Fill the g_currentGuessWord with '_' for each letter of the chosen word.
          * 
-         * So, if the chosen word is "TEST" after executing the for, variable
+         * So, if the chosen word is "TEST" after executing the for loop, variable
          *  g_currentGuessedWord will contain "____"
          * 
          */
@@ -216,30 +321,47 @@ document.onkeyup = function (event) {
         }
 
         /**
-         * Update the Game Started Msg String
+        * Update the Game In Progress Message
+        */
+       var gameStatusId = document.getElementById("game-status-id");
+       gameStatusId.textContent = GAME_IN_PROGRESS_STRING;
+
+       /**
+       * Update the Game Sesssion Number
+       */
+       var gameSessionId = document.getElementById('game-session-id');
+       gameSessionId.textContent = g_totalGameSessions;
+
+
+        /**
+         * Clear the session message
          */
         var gameSessionMsgId = document.getElementById('game-session-msg');
-        gameSessionMsgId.textContent = GAME_IN_PROGRESS_MSG_STRING;
+        gameSessionMsgId.textContent = BLANK_STRING;
+
+
 
 
 
     } else {
 
-        g_numOfAttempsMade++;
-        updateCurrentGameStatsCard();
+        var key_pressed = event.key.toUpperCase();
 
         /**
-         * Check if this is a new letter guess; if so do the following:
+         * Check if user press a valid key and  this is a new letter guess.
+         * If so do the following:
          *   - save the letter pressed
+         *   - update the attemts counter
          *   - check if the user guessed the word
          *   - update the letters pressed field on the page
-         *   
          */
-
 
         if ((g_LettersAlreadyPressed.includes(key_pressed) == false) && (isAlphabet(key_pressed) == true)) {
 
             g_LettersAlreadyPressed.push(key_pressed);
+            g_numOfAttempsMade++;
+            updateCurrentGameStatsCard();
+
 
             /**
              * Update the Letters Already Pressed Field (HTML)
@@ -271,23 +393,21 @@ document.onkeyup = function (event) {
 
             }
 
-
-
         }
-
 
     }
 
-
+    /**
+     * Update the results if the game is over
+     */
     if (m_game_over == true) {
+
         var gameResultString;
-        g_gameStarted = false;
-
-
+    
         /**
          *  Game Over Message
          */
-        if(g_user_won == true) {
+        if (g_user_won == true) {
             gameResultString = USER_WON_STRING;
             var gameResultsID = document.getElementById('overall-wins-count');
             gameResultsID.textContent = g_winCount;
@@ -301,38 +421,15 @@ document.onkeyup = function (event) {
         var wordDisplayId = document.getElementById('current-Word-display');
         wordDisplayId.textContent = gameResultString;
 
-        var gameStatusId = document.getElementById("game-status-id");
-        gameStatusId.textContent = GAMES_PLAYED_STRING;
-
-        var gameSessionMsgId = document.getElementById('game-session-msg');
-        gameSessionMsgId.textContent = GAME_NOT_IN_PROGRESS_MSG_STRING;
-
-     
-    
         module_init();
-
 
     }
     else {
         /**
-         * Update the Number of Attemps made and Attempts remaining
+         * Game not over - Update the current state of the word guess
          */
-
-        updateGameSessionCard();
-
-        
-
+        updateGuessedWord();
     }
-
-
-
-    /**
-     * HTML UPDATES
-     */
-
-
-
-
 
 
 };
