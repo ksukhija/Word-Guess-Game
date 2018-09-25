@@ -12,6 +12,11 @@ var g_currentGuessedWord = [];
 var g_charsLeft2BeGuessed;
 var g_LettersAlreadyPressed = [];
 var g_user_won = false;
+var g_word_list = ["soar",       "sweet",  "jealous", "swing",     "imbibe",
+                   "understood", "home",   "pollute", "petite",    "airport",
+                   "sordid",     "shave",  "stitch",   "toothpaste", "suffer",
+                   "giraffe",    "top",    "meeting",  "abandon",   "punish",
+                   "ratty",      "nebulous", "drag",    "banana",   "suck"];
 
 const MAX_ATTEMPTS_ALLOWED = 10;
 const CHAR_DISPLAY_SYMBOL = '_';
@@ -192,7 +197,10 @@ document.onkeyup = function (event) {
         /**
          *  Let Computer select the word to guess
          */
-        g_chosenWord = "TEST";
+        var rand1to25 = Math.floor((Math.random() * 25) + 1);
+
+        g_chosenWord = g_word_list[rand1to25].toUpperCase();
+       // g_chosenWord = "TEST"
         g_charsLeft2BeGuessed = g_chosenWord;
 
 
