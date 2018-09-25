@@ -1,0 +1,146 @@
+<!-- Word-Guess Game -->
+<!DOCTYPE html>
+<html lang="en-us">
+
+
+<head>
+    <meta charset="UTF-8">
+    <title>Bootstrap Example</title>
+
+    <!-- Bootstrap CDN -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <!-- We create a jumbotron div. Everything placed in here gets styled by the CSS rules of the element's class. -->
+    <div class="jumbotron">
+        <h1 class="display-5 text-center text-primary">Word Guess Game</h1>
+    </div>
+
+
+
+    <div class="container">
+
+        <!-- FIRST CARD ROW: THREE CARDS -->
+        <div class="card-deck ">
+
+            <!-- CARD 1-->
+            <div class="card border-primary">
+                <div class="card-header text-center">
+                    <div class="card-title">
+                        <h3 class="text-primary"> Current Game Stats <br>
+                    </div>
+                </div>
+                <div class="card-body text-center">
+
+
+                    <p><strong>NUMBER OF ATTEMPTS MADE</strong> </p>
+                    <button type="button" class="btn btn-outline-primary"">
+                        <h2 id="num-of-attemps-made"></h2>
+                    </button>
+
+                    <br> <br>
+                    <p><strong> NUMBER OF ATTEMPTS REMAINING</strong> </p>
+                    <button type="button" class="btn btn-outline-primary"">
+                        <h2 id="num-of-attemps-remaining"></h2>
+                    </button>
+
+                </div>
+            </div>
+
+            <!-- CARD 2-->
+            <div class="card  border-primary text-white bg-primary">
+
+                <div class="card-header text-center">
+                    <div class="card-title">
+                        <h3 id="game-status-id"> </h3>
+                        <div id="game-session-id" class="text-warning" style="font-size: 2em"> </div>
+                    </div>
+                </div>
+
+                <div class="card-body text-center">
+                    <br><br><br>
+                    <h4 id="current-Word-display" class="text-warning"> <strong></strong></h4>
+                    <br><br>
+
+                    <!-- <p id="game-session-msg" class="text-warning"> <strong>PRESS ANY KEY TO GET STARTED...</strong></p> -->
+                    <!-- <p id="game-session-msg" class="text-warning"> <strong></strong></p> -->
+                    <h6 id="game-session-msg" class="text-warning"> </h6>
+                    <br>
+                </div>
+
+
+
+            </div>
+
+            <!-- CARD 3-->
+            <div class="card border-primary">
+                <div class="card-header text-center">
+                    <div class="card-title">
+                        <h3 class="text-primary"> Letters Already Pressed <br>
+                    </div>
+
+                </div>
+                <div class="card-body">
+                    <h5 id="letters-already-pressed"></h5>
+                </div>
+            </div>
+        </div>
+        <!-- END OF FIRST ROW OF 3 CARDS-->
+
+        <br> <br>
+
+        <!-- SECOND CARD ROW: ONE CARD -->
+        <div class="card border-info text-white bg-info">
+            <div class="card-header text-center">
+                <div class="card-title">
+                    <h3> Overall Game Stats <br>
+                </div>
+            </div>
+        </div>
+        <!-- END OF SECOND CARD ROW-->
+
+        <br>
+
+        <div class="card-deck ">
+
+            <!-- CARD 1-->
+            <div class="card border-info text-white bg-info ">
+                <div class="card-header text-center">
+                    <div class="card-title">
+                        <h3> Wins <br>
+                    </div>
+                </div>
+                <div class="card-body text-center">
+                    <button type="button" class="btn btn-warning">
+                        <h2 id="overall-wins-count">0</h2>
+                    </button>
+
+                </div>
+            </div>
+
+            <!-- CARD 2-->
+            <div class="card border-info text-white bg-info">
+                <div class="card-header text-center">
+                    <div class="card-title">
+                        <h3> Loses <br>
+                    </div>
+                </div>
+                <div class="card-body text-center">
+                    <button type="button" class="btn btn-warning">
+                        <h2 id="overall-loses-count">0</h2>
+                    </button>
+
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+    <script src="./assets/javascript/game.js"></script>
+</body>
+
+</html>
